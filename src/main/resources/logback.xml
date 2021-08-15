@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <property name="HOME_LOG" value="logs/app.log"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] |%level| %logger{36} - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <appender name="INFO_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>3GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- each archived file, size max 300MB -->
+            <maxFileSize>300MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 5GB, it will delete old archived file -->
+            <totalSizeCap>5GB</totalSizeCap>
+            <!-- 7 days to keep -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] |%level| %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.mkyong" level="debug" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="INFO_LOG_FILE"/>
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>
