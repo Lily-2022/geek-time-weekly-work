@@ -7,9 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OkHttpClientDemo {
+public class OkHttpClientSender {
 
-    private static final Logger logger = LoggerFactory.getLogger(OkHttpClientDemo.class);
+    private static final Logger logger = LoggerFactory.getLogger(OkHttpClientSender.class);
 
     public static void main(String[] args) {
         OkHttpClient httpClient = new OkHttpClient();
@@ -22,7 +22,7 @@ public class OkHttpClientDemo {
         }
     }
 
-    private static String retrieveData(OkHttpClient httpClient) {
+    public static String retrieveData(OkHttpClient httpClient) {
         String url = "http://localhost:8801";
         try (Response response = httpClient.newCall(new Request.Builder()
                 .url(url)
