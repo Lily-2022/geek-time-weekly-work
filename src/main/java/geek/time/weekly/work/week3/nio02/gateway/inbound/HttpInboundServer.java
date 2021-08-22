@@ -1,7 +1,5 @@
-package geek.time.weekly.work.week3.nio01.netty;
+package geek.time.weekly.work.week3.nio02.gateway.inbound;
 
-import geek.time.weekly.work.week3.nio02.gateway.outbound.netty4.NettyHttpClient;
-import geek.time.weekly.work.week3.nio02.gateway.outbound.netty4.NettyHttpClientOutboundHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -12,17 +10,25 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Data;
 
-public class NettyHttpServer {
+import java.util.List;
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyHttpServer.class);
+@Data
+public class HttpInboundServer {
 
-    public static void main(String[] args) throws InterruptedException{
-        int port = 8808;
+    private int port;
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup(2);
+    private List<String> proxyServers;
+
+    public HttpInboundServer(int port, List<String> proxyServers) {
+        this.port=port;
+        this.proxyServers = proxyServers;
+    }
+
+    public void run() throws Exception {
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(16);
 
         try {
@@ -37,25 +43,17 @@ public class NettyHttpServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
 
-//            NettyHttpClient nettyHttpClient = NettyHttpClient.getInstance("127.0.0.1", 8801);
-//            nettyHttpClient.start();
-
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new HttpInitializer());
-//                    .childHandler(nettyHttpClient.getChannel().pipeline().last()); //todo use netty client to replace http handler
+                    .handler(new LoggingHandler(LogLevel.DEBUG))
+                    .childHandler(new HttpInboundInitializer(this.proxyServers));
 
             Channel ch = b.bind(port).sync().channel();
-            logger.info("Start netty http server, listen addr and port is: http://127.0.0.1:" + port + "/");
+            System.out.println("开启netty http服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');
             ch.closeFuture().sync();
-        } catch (Exception e) {
-          e.printStackTrace();
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
     }
-
-
 
 }

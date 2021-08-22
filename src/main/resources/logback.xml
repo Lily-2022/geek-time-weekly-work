@@ -16,12 +16,12 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>3GB</maxFileSize>
+                <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!-- each archived file, size max 300MB -->
-            <maxFileSize>300MB</maxFileSize>
+            <maxFileSize>100MB</maxFileSize>
             <!-- total size of all archive files, if total size > 5GB, it will delete old archived file -->
-            <totalSizeCap>5GB</totalSizeCap>
+            <totalSizeCap>110MB</totalSizeCap>
             <!-- 7 days to keep -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>

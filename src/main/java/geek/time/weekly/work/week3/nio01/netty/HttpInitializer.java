@@ -10,7 +10,6 @@ import okhttp3.OkHttpClient;
 public class HttpInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) {
-        new OkHttpClient();
         ChannelPipeline p = socketChannel.pipeline();
         p.addLast(new HttpServerCodec());
         p.addLast(new HttpObjectAggregator(1024 * 1024));
