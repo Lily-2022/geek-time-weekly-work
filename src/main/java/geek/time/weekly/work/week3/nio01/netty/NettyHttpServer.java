@@ -37,13 +37,13 @@ public class NettyHttpServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
 
-//            NettyHttpClient nettyHttpClient = NettyHttpClient.getInstance("127.0.0.1", 8801);
-//            nettyHttpClient.start();
+            NettyHttpClient nettyHttpClient = NettyHttpClient.getInstance("127.0.0.1", 8801);
+            nettyHttpClient.start();
 
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new HttpInitializer());
-//                    .childHandler(nettyHttpClient.getChannel().pipeline().last()); //todo use netty client to replace http handler
+//                    .childHandler(new HttpInitializer());
+                    .childHandler(nettyHttpClient.getChannel().pipeline().last()); //todo use netty client to replace http handler
 
             Channel ch = b.bind(port).sync().channel();
             logger.info("Start netty http server, listen addr and port is: http://127.0.0.1:" + port + "/");

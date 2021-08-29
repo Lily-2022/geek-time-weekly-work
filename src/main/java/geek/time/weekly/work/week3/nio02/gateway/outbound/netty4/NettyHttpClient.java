@@ -1,11 +1,9 @@
 package geek.time.weekly.work.week3.nio02.gateway.outbound.netty4;
 
-import geek.time.weekly.work.week3.nio02.gateway.inbound.HttpInboundHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
