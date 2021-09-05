@@ -1,4 +1,4 @@
-package geek.time.weekly.work.week5;
+package geek.time.weekly.work.week5.beanss;
 import java.io.Serializable;
 
 public class Student implements Serializable {

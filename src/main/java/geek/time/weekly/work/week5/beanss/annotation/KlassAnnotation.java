@@ -1,4 +1,4 @@
-package geek.time.weekly.work.week5.annotation;
+package geek.time.weekly.work.week5.beanss.annotation;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package geek.time.weekly.work.week5;
+package geek.time.weekly.work.week5.beanss;
 
-import geek.time.weekly.work.week5.annotation.KlassAnnotation;
+import geek.time.weekly.work.week5.beanss.annotation.KlassAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
