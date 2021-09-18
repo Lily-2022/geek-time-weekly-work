@@ -1,134 +1,134 @@
 create table user_login (
-user_id int auto_increment not null,
-login_name varchar(255) not null,
-password char(32) not null,
-status char(1) not null default 1,
-last_update_time timestamp not null,
-primary key pk_user_id(user_id)
-) ENGINE = innodb;
+u_user_id bigint(20) auto_increment not null,
+u_login_name varchar(20) not null,
+u_password varchar(64) not null,
+u_status tinyint(11) not null default 1,
+u_last_update_time bigint(30) not null,
+primary key pk_user_id(u_user_id)
+) ENGINE = innodb default CHARSET=utf8mb4 comment='user login';
 
 create table user_info (
-user_info_id int auto_increment not null,
-user_id not null,
-username varchar(255) not null,
-phone_number varchar(11),
-email_addr varchar(50),
-gender char(1),
-address varchar(255),
-register_time timestamp not null,
-birthday DATETIME,
-last_update_time timestamp not null,
-primary key pk_user_info(user_info_id)
-) ENGINE = innodb;
+ui_user_info_id bigint(20) auto_increment not null,
+ui_user_id bigint(20) not null,
+ui_username varchar(64) not null,
+ui_phone_number varchar(11),
+ui_email_addr varchar(50),
+ui_gender tinyint(11),
+ui_address varchar(100),
+ui_register_time bigint(30) not null,
+ui_birthday varchar(20),
+ui_last_update_time bigint(30) not null,
+primary key pk_user_info(ui_user_info_id)
+) ENGINE = innodb default CHARSET=utf8mb4 comment='user info';
 
 create table brand_info(
-brand_id int auto_increment not null,
-brand_name varchar(50) not null,
-phone_number varchar(20) not null,
-brand_web varchar(255),
-brand_logo_url varchar(255),
-brand_desc varchar(255),
-brand_status char(1),
-last_update_time timestamp not null
-primary key pk_brand_info(brand_id)
-) ENGINE = innodb;
+b_brand_id bigint(20) auto_increment not null,
+b_brand_name varchar(50) not null,
+b_phone_number varchar(20) not null,
+b_brand_web varchar(255),
+b_brand_logo_url varchar(255),
+b_brand_desc varchar(255),
+b_brand_status tinyint(11),
+b_last_update_time bigint(30) not null,
+primary key pk_brand_info(b_brand_id)
+) ENGINE = innodb default CHARSET=utf8mb4 comment='brand info';
 
 create table goods_category(
-category_id int auto_increment not null,
-category_name varchar(255),
-category_code varchar(100),
-parent_id int not null,
-category_level int,
-category_status char(1) not null,
-last_update_time timestamp not null,
-primary key pk_goods_category(category_id)
+g_category_id bigint(20) auto_increment not null,
+g_category_name varchar(255),
+g_category_code varchar(100),
+g_parent_id bigint(20) not null,
+g_category_level tinyint(10),
+g_category_status tinyint(10) not null,
+g_last_update_time bigint(30) not null,
+primary key pk_goods_category(g_category_id)
 
-) ENGINE = innodb;
+) ENGINE = innodb default CHARSET=utf8mb4 comment='goods category';
 
 
 create table product_image_info(
-image_id int auto_increment not null,
-product_id int not null,
-image_url varchar(255),
-img_order tinyint not null,
-descriptions varchar(255),
-status char(1) not null,
-is_master char(1) not null,
-last_update_time timestamp not null
-primary key pk_product_image_info(image_id)
-) ENGINE = innodb;
+p_image_id bigint(20) auto_increment not null,
+p_product_id bigint(30) not null,
+p_image_url varchar(255),
+p_img_order tinyint(10) not null,
+p_descriptions varchar(255),
+p_status tinyint(2) not null,
+p_is_master tinyint(2) not null,
+p_last_update_time bigint(30) not null,
+primary key pk_product_image_info(p_image_id)
+) ENGINE = innodb default CHARSET=utf8mb4 comment='product image info';
 
 create table products_info(
-product_id int auto_increment not null,
-product_code varchar(50),
-product_name varchar(50),
-brand_id int not null,
-price DECIMAL(8, 2) not null,
-publish_status char(1) not null,
-audit_status char(1) not null,
-weight FLOAT,
-lengths FLOAT,
-height FLOAT,
-width FLOAT,
-color varchar(50),
-descriptions varchar(255),
-last_update_time timestamp not null,
-insert_time timestamp not null,
-one_category_id int not null,
-two_category_id int not null,
-three_category_id int not null,
-production_date DATETIME not null,
-expire_time int ,
-supplier_id int,
-qr_code varchar(255),
-primary key pk_products_info(product_id)
+pi_product_id bigint(30) auto_increment not null,
+pi_product_code varchar(50),
+pi_product_name varchar(50),
+pi_brand_id int not null,
+pi_price DECIMAL(8, 2) not null,
+pi_publish_status char(1) not null,
+pi_audit_status char(1) not null,
+pi_weight FLOAT,
+pi_lengths FLOAT,
+pi_height FLOAT,
+pi_width FLOAT,
+pi_color varchar(50),
+pi_descriptions varchar(255),
+pi_last_update_time bigint(30) not null,
+pi_insert_time bigint(30) not null,
+pi_one_category_id int ,
+pi_two_category_id int ,
+pi_three_category_id int,
+pi_production_date DATETIME not null,
+pi_expire_time bigint(30) ,
+pi_supplier_id int,
+pi_qr_code varchar(255),
+primary key pk_products_info(pi_product_id)
 
-)ENGINE  = innodb;
+)ENGINE  = innodb default CHARSET=utf8mb4 comment='products info';
 
 
 create table order_table (
-order_id int auto_increment not null,
-order_sn bigint not null,
-user_id int not null,
-receiver_name varchar(50),
-address varchar(255),
-payment tinyint not null,
-order_money DECIMAL(8, 2) not null,
-delivery_fee DECIMAL(8, 2) not null,
-delivery_sn varchar(255),
-create_time timestamp not null,
-pay_time DATETIME,
-shipping_time DATETIME,
-receive_name varchar(255),
-order_status tinyint not null,
-order_point int not null,
-delivery_time DATETIME,
-last_update_time timestamp not null,
-delivery-company varchar(255)
-primary key pk_order_table(order_id)
-) engine = innodb;
+o_order_id bigint(30) auto_increment not null,
+o_order_sn bigint(10) not null,
+o_user_id bigint(20) not null,
+o_receiver_name varchar(50),
+o_address varchar(255),
+o_payment tinyint(10) not null,
+o_order_money DECIMAL(8, 2) not null,
+o_delivery_fee DECIMAL(8, 2) not null,
+o_delivery_sn varchar(255),
+o_create_time bigint(30) not null,
+o_pay_time bigint(30),
+o_shipping_time bigint(30),
+o_receive_name varchar(255),
+o_order_status tinyint not null,
+o_order_point int not null,
+o_delivery_time bigint(30),
+o_last_update_time bigint(30) not null,
+o_delivery_company varchar(255),
+primary key pk_order_table(o_order_id)
+) engine = innodb default CHARSET=utf8mb4 comment='order table';
 
 create table order_details(
-detail_id primary key, auto_increment not null,
-order_id int not null,
-product_id int nut null,
-product_name varchar(255),
-product_nums int,
-product_price ,
-average_cost,
-weight FLOAT,
-discount_money,
-last_update_time timestamp not null
-primary key pk_order_details(detail_id)
-) engine=innodb;
+od_detail_id bigint(30) auto_increment not null,
+od_order_id bigint(30) not null,
+od_product_id bigint(30) not null,
+od_product_name varchar(255),
+od_product_nums int,
+od_product_price varchar(20),
+od_average_cost varchar(20),
+od_weight FLOAT,
+od_discount_money varchar(10),
+od_last_update_time bigint(30) not null,
+primary key pk_order_details(od_detail_id)
+) engine = innodb default CHARSET=utf8mb4 comment='order details';
 
 CREATE TABLE order_car(
-  cart_id int not null AUTO_INCREMENT,
-  user_id int not null ,
-  product_id int not null ,
-  product_amount int not null ,
-  price DECIMAL(8,2) not null ,
-  insert_time timestamp not null default current_timestamp,
-  last_update_time timestamp not null default current_timestamp on update current_timestamp ,
-  primary key pk_order_car(cart_id)
-) ENGINE = innodb
+  c_cart_id int  AUTO_INCREMENT not null,
+  c_user_id bigint(30) not null ,
+  c_product_id bigint(30) not null ,
+  c_product_amount int not null ,
+  c_price DECIMAL(8,2) not null ,
+  c_insert_time bigint(30) not null,
+  c_last_update_time bigint(30) not null,
+  primary key pk_order_car(c_cart_id)
+) ENGINE = innodb default CHARSET=utf8mb4 comment='order car';
