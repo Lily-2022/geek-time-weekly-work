@@ -1,0 +1,30 @@
+spring:
+  shardingshphere:
+    props:
+      sql:
+        show:
+          true
+    datasource:
+      name: geek_time, geek_time2
+      geek_time:
+        type: com.zaxxer.hikari,HikariDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/geek_time?rewriteBatchedStatements=true&characterEncoding=UTF-8&useUnicode=true&allowMultiQueries=true
+        username: root
+        password: Mysql_2021
+      geek_time2:
+        type: com.zaxxer.hikari,HikariDataSource
+          driverClassName: com.mysql.jdbc.Driver
+          jdbc-url: jdbc:mysql://localhost:3306/geek_time2?rewriteBatchedStatements=true&characterEncoding=UTF-8&useUnicode=true&allowMultiQueries=true
+          username: root
+          password: Mysql_2021
+    sharding:
+      defaultDatabaseStrategy:
+        hint:
+          algorithmClassName: com.dgd.multidatasource.shardingsphere.MyDatasourceRoutingAlgorithm
+      tables:
+        test:
+          actualDataNodes: geek_time.test
+      defaultTablesStrategy:
+        none:
+          any: ""

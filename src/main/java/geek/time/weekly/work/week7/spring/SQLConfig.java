@@ -43,7 +43,7 @@ public class SQLConfig {
         return new HikariDataSource(hikariConfig);
     }
 
-    @Bean
+    @Bean(name = "dynamicDataSource")
     public DynamicDataSource dynamicDataSource() {
         DynamicDataSource data = new DynamicDataSource();
         DataSource geekTimeSource = createDataSourceGeekTime();
