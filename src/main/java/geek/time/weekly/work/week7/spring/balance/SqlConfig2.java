@@ -1,23 +1,20 @@
-package geek.time.weekly.work.week7.spring;
+package geek.time.weekly.work.week7.spring.balance;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@ComponentScan("geek.time.weekly.work.week7.spring")
+@Slf4j
 @Configuration
-@EnableAspectJAutoProxy
-public class SQLConfig {
+public class SqlConfig2 {
 
-    @Bean(initMethod = "init", destroyMethod = "close")
+    @Bean(name="master")
     public DataSource createDataSourceGeekTime() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/geek_time?rewriteBatchedStatements=true&characterEncoding=UTF-8&useUnicode=true&allowMultiQueries=true");
@@ -30,7 +27,7 @@ public class SQLConfig {
         return new HikariDataSource(hikariConfig);
     }
 
-    @Bean(initMethod = "init", destroyMethod = "close")
+    @Bean(name="slave")
     public DataSource createDataSourceGeekTime2() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/geek_time2?rewriteBatchedStatements=true&characterEncoding=UTF-8&useUnicode=true&allowMultiQueries=true");
@@ -49,20 +46,12 @@ public class SQLConfig {
         DataSource geekTimeSource = createDataSourceGeekTime();
         DataSource geekTime2Source = createDataSourceGeekTime2();
 
-        Map map = new HashMap();
+        Map<Object, Object> map = new HashMap();
         map.put("geek_time", geekTimeSource);
         map.put("geek_time2", geekTime2Source);
         data.setTargetDataSources(map);
         data.setDefaultTargetDataSource(geekTimeSource);
         return data;
     }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        JdbcTemplate template = new JdbcTemplate();
-        template.setDataSource(dynamicDataSource());
-        return template;
-    }
-
 
 }

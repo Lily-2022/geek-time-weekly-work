@@ -1,9 +1,6 @@
-package geek.time.weekly.work.week7.spring;
+package geek.time.weekly.work.week7.spring.nobalance;
 
 public class CustomerContextAdaptor {
-
-    public static final String DATA_SOURCEA = "geek_time";
-    public static final String DATA_SOURCEB = "geek_time2";
 
     private static final ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 
@@ -13,6 +10,10 @@ public class CustomerContextAdaptor {
 
     public static String getCustomerType() {
         return contextHolder.get();
+    }
+
+    public static void clear() {
+        contextHolder.remove();
     }
 
 }
