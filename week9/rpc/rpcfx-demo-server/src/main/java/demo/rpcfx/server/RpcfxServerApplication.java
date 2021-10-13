@@ -1,14 +1,12 @@
 package demo.rpcfx.server;
 
-import io.kimmking.rpcfx.api.RpcfxRequest;
-import io.kimmking.rpcfx.api.RpcfxResolver;
-import io.kimmking.rpcfx.api.RpcfxResponse;
-import io.kimmking.rpcfx.api.ServiceProviderDesc;
-import io.kimmking.rpcfx.demo.api.OrderService;
-import io.kimmking.rpcfx.demo.api.UserService;
-import io.kimmking.rpcfx.server.RpcfxInvoker;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.zookeeper.CreateMode;
+
+import demo.rpcfx.api.OrderService;
+import demo.rpcfx.api.UserService;
+import demo.rpcfx.core.api.RpcfxRequest;
+import demo.rpcfx.core.api.RpcfxResolver;
+import demo.rpcfx.core.api.RpcfxResponse;
+import demo.rpcfx.core.server.RpcfxInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.InetAddress;
 
 @SpringBootApplication
 @RestController
@@ -45,23 +41,23 @@ public class RpcfxServerApplication {
 		SpringApplication.run(RpcfxServerApplication.class, args);
 	}
 
-	private static void registerService(CuratorFramework client, String service) throws Exception {
-		ServiceProviderDesc userServiceSesc = ServiceProviderDesc.builder()
-				.host(InetAddress.getLocalHost().getHostAddress())
-				.port(8080).serviceClass(service).build();
-		// String userServiceSescJson = JSON.toJSONString(userServiceSesc);
-
-		try {
-			if ( null == client.checkExists().forPath("/" + service)) {
-				client.create().withMode(CreateMode.PERSISTENT).forPath("/" + service, "service".getBytes());
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		client.create().withMode(CreateMode.EPHEMERAL).
-				forPath( "/" + service + "/" + userServiceSesc.getHost() + "_" + userServiceSesc.getPort(), "provider".getBytes());
-	}
+//	private static void registerService(CuratorFramework client, String service) throws Exception {
+//		ServiceProviderDesc userServiceSesc = ServiceProviderDesc.builder()
+//				.host(InetAddress.getLocalHost().getHostAddress())
+//				.port(8080).serviceClass(service).build();
+//		// String userServiceSescJson = JSON.toJSONString(userServiceSesc);
+//
+//		try {
+//			if ( null == client.checkExists().forPath("/" + service)) {
+//				client.create().withMode(CreateMode.PERSISTENT).forPath("/" + service, "service".getBytes());
+//			}
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//
+//		client.create().withMode(CreateMode.EPHEMERAL).
+//				forPath( "/" + service + "/" + userServiceSesc.getHost() + "_" + userServiceSesc.getPort(), "provider".getBytes());
+//	}
 
 	@Autowired
 	RpcfxInvoker invoker;
@@ -87,12 +83,12 @@ public class RpcfxServerApplication {
 	// annotation
 
 
-	@Bean(name = "io.kimmking.rpcfx.demo.api.UserService")
+	@Bean(name = "demo.rpcfx.api.UserService")
 	public UserService createUserService(){
 		return new UserServiceImpl();
 	}
 
-	@Bean(name = "io.kimmking.rpcfx.demo.api.OrderService")
+	@Bean(name = "demo.rpcfx.api.OrderService")
 	public OrderService createOrderService(){
 		return new OrderServiceImpl();
 	}

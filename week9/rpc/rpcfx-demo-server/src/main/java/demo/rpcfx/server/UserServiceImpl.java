@@ -1,7 +1,7 @@
 package demo.rpcfx.server;
 
-import io.kimmking.rpcfx.demo.api.User;
-import io.kimmking.rpcfx.demo.api.UserService;
+import demo.rpcfx.api.User;
+import demo.rpcfx.api.UserService;
 
 public class UserServiceImpl implements UserService {
 

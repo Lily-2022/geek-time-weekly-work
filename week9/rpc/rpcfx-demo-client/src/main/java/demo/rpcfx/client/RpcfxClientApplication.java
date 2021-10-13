@@ -1,20 +1,22 @@
 package demo.rpcfx.client;
 
 
-import demo.rpcfx.api.User;
-import demo.rpcfx.api.UserService;
+import demo.rpcfx.api.Order;
+import demo.rpcfx.api.OrderService;
 import demo.rpcfx.core.api.Filter;
 import demo.rpcfx.core.api.LoadBalancer;
 import demo.rpcfx.core.api.Router;
 import demo.rpcfx.core.api.RpcfxRequest;
-import demo.rpcfx.core.client.Rpcfx;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
 @SpringBootApplication
-public class RpcfxClientApplication {
+public class RpcfxClientApplication implements CommandLineRunner {
 
 	// 二方库
 	// 三方库 lib
@@ -26,9 +28,9 @@ public class RpcfxClientApplication {
 		// UserService service = new xxx();
 		// service.findById
 
-		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8080/");
-		User user = userService.findById(1);
-		System.out.println("find user id=1 from server: " + user.getName());
+//		UserService userService = Rpcfx.create(UserService.class, "http://localhost:8080/");
+//		User user = userService.findById(1);
+//		System.out.println("find user id=1 from server: " + user.getName());
 
 //		OrderService orderService = Rpcfx.create(OrderService.class, "http://localhost:8080/");
 //		Order order = orderService.findOrderById(1992129);
@@ -37,7 +39,16 @@ public class RpcfxClientApplication {
 //		//
 //		UserService userService2 = Rpcfx.createFromRegistry(UserService.class, "localhost:2181", new TagRouter(), new RandomLoadBalancer(), new CuicuiFilter());
 
-//		SpringApplication.run(RpcfxClientApplication.class, args);
+		SpringApplication.run(RpcfxClientApplication.class, args);
+	}
+
+	@Autowired
+	OrderService orderService;
+
+	@Override
+	public void run(String... args) throws Exception {
+		Order order = orderService.findOrderById(1992129);
+		System.out.println(String.format("find order name=%s, amount=%f", order.getName(), order.getAmount()));
 	}
 
 	private static class TagRouter implements Router {

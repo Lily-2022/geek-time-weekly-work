@@ -3,11 +3,10 @@ package demo.rpcfx.core.client;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
-import io.kimmking.rpcfx.api.*;
+import demo.rpcfx.core.api.*;
+import demo.rpcfx.core.exception.RpcfxException;
+import demo.rpcfx.core.http.ClientRequest;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -19,7 +18,7 @@ import java.util.List;
 public final class Rpcfx {
 
     static {
-        ParserConfig.getGlobalInstance().addAccept("io.kimmking");
+        ParserConfig.getGlobalInstance().addAccept("org.example");
     }
 
     public static <T, filters> T createFromRegistry(final Class<T> serviceClass, final String zkUrl, Router router, LoadBalancer loadBalance, Filter filter) {
@@ -83,13 +82,21 @@ public final class Rpcfx {
                 }
             }
 
-            RpcfxResponse response = post(request, url);
+            RpcfxResponse response = null;
+            try {
+                response = post(request, url);
+            } catch (Exception e) {
+                throw new RpcfxException("500", "Exception happened for post");
+            }
 
             // 加filter地方之三
             // Student.setTeacher("cuijing");
 
             // 这里判断response.status，处理异常
             // 考虑封装一个全局的RpcfxException
+            if (response == null || response.getResult() == null) {
+                throw new RpcfxException("500", "response is null or response result is null");
+            }
 
             return JSON.parse(response.getResult().toString());
         }
@@ -98,16 +105,19 @@ public final class Rpcfx {
             String reqJson = JSON.toJSONString(req);
             System.out.println("req json: "+reqJson);
 
+            String result = ClientRequest.getRequestMethod(reqJson, url);
+            return JSON.parseObject(result, RpcfxResponse.class);
+
             // 1.可以复用client
             // 2.尝试使用httpclient或者netty client
-            OkHttpClient client = new OkHttpClient();
-            final Request request = new Request.Builder()
-                    .url(url)
-                    .post(RequestBody.create(JSONTYPE, reqJson))
-                    .build();
-            String respJson = client.newCall(request).execute().body().string();
-            System.out.println("resp json: "+respJson);
-            return JSON.parseObject(respJson, RpcfxResponse.class);
+//            OkHttpClient client = new OkHttpClient();
+//            final Request request = new Request.Builder()
+//                    .url(url)
+//                    .post(RequestBody.create(JSONTYPE, reqJson))
+//                    .build();
+//            String respJson = client.newCall(request).execute().body().string();
+//            System.out.println("resp json: "+respJson);
+//            return JSON.parseObject(respJson, RpcfxResponse.class);
         }
     }
 }
